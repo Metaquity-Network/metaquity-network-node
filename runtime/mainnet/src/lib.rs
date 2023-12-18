@@ -32,7 +32,7 @@ use frame_support::{
 	parameter_types,
 	traits::{
 		fungible::HoldConsideration, AsEnsureOriginWithArg, ConstU128, ConstU32, ConstU64, ConstU8,
-		EitherOfDiverse, Everything, LinearStoragePrice,
+		EitherOfDiverse, Everything, LinearStoragePrice, WithdrawReasons,
 	},
 	weights::{ConstantMultiplier, Weight},
 	BoundedVec, PalletId,
@@ -48,7 +48,7 @@ pub use runtime_common::{
 	NORMAL_DISPATCH_RATIO, SLOT_DURATION,
 };
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-pub use sp_runtime::{MultiAddress, Perbill, Percent, Permill};
+pub use sp_runtime::{traits::ConvertInto, MultiAddress, Perbill, Percent, Permill};
 use xcm_config::{RelayLocation, XcmConfig, XcmOriginToTransactDispatchOrigin};
 
 #[cfg(any(feature = "std", test))]
@@ -739,7 +739,25 @@ impl pallet_treasury::Config for Runtime {
 	type SpendOrigin = EnsureWithSuccess<EnsureRoot<AccountId>, AccountId, MaxBalance>;
 }
 
+parameter_types! {
+	pub UnvestedFundsAllowedWithdrawReasons: WithdrawReasons =
+		WithdrawReasons::except(WithdrawReasons::TRANSFER | WithdrawReasons::RESERVE);
+}
+
+impl pallet_vesting::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type BlockNumberToBalance = ConvertInto;
+	type MinVestedTransfer = ConstU128<{ 1 * MQTY }>;
+	type WeightInfo = pallet_vesting::weights::SubstrateWeight<Runtime>;
+	type UnvestedFundsAllowedWithdrawReasons = UnvestedFundsAllowedWithdrawReasons;
+	// `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the
+	// highest number of schedules that encodes less than 2^10.
+	const MAX_VESTING_SCHEDULES: u32 = 28;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
+// add pallet vesting
 construct_runtime!(
 	pub struct Runtime {
 		// System support stuff.
@@ -759,6 +777,7 @@ construct_runtime!(
 		TransactionPayment: pallet_transaction_payment = 11,
 		Assets: pallet_assets = 12,
 		Treasury: pallet_treasury = 13,
+		Vesting: pallet_vesting = 14,
 
 		// Governance
 		Sudo: pallet_sudo = 15,
@@ -802,6 +821,7 @@ mod benches {
 		[pallet_utility, Utility]
 		[pallet_nfts, Nfts]
 		[pallet_nft_fractionalization, NftFractionalization]
+		[pallet_vesting, Vesting]
 		[cumulus_pallet_xcmp_queue, XcmpQueue]
 		// SBP-M1 review: add missing pallets: benchmarks should be re-run on reference hardware based on how they are configured/used by your runtime
 		// TODO (@khssnv): consider reference hardware and re-run benchmarks

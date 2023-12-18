@@ -54,6 +54,7 @@ pallet-transaction-payment = { workspace = true, default-features = false }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true, default-features = false }
 pallet-treasury = { workspace = true, default-features = false }
 pallet-utility = { workspace = true, default-features = false }
+pallet-vesting = { workspace = true, default-features = false }
 sp-api = { workspace = true, default-features = false }
 sp-block-builder = { workspace = true, default-features = false }
 sp-consensus-aura = { workspace = true, default-features = false }
@@ -126,6 +127,7 @@ std = [
 	"pallet-transaction-payment/std",
 	"pallet-treasury/std",
 	"pallet-utility/std",
+	"pallet-vesting/std",
 	"pallet-xcm/std",
 	"parachain-info/std",
 	"parity-scale-codec/std",
@@ -171,6 +173,7 @@ runtime-benchmarks = [
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
+	"pallet-vesting/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
@@ -203,6 +206,7 @@ try-runtime = [
 	"pallet-transaction-payment/try-runtime",
 	"pallet-treasury/try-runtime",
 	"pallet-utility/try-runtime",
+	"pallet-vesting/try-runtime",
 	"pallet-xcm/try-runtime",
 	"parachain-info/try-runtime",
 ]
