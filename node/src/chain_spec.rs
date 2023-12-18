@@ -265,6 +265,7 @@ pub mod devnet {
 			},
 			transaction_payment: Default::default(),
 			treasury: Default::default(),
+			vesting: Default::default(),
 		}
 	}
 }
