@@ -265,6 +265,7 @@ pub mod devnet {
 			},
 			transaction_payment: Default::default(),
 			treasury: Default::default(),
+			vesting: Default::default(),
 		}
 	}
 }
@@ -463,6 +464,7 @@ pub mod mainnet {
 			},
 			transaction_payment: Default::default(),
 			treasury: Default::default(),
+			vesting: Default::default(),
 		}
 	}
 }
