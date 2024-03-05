@@ -76,7 +76,7 @@ pub mod devnet {
 	pub fn development_config() -> DevnetChainSpec {
 		// Give your base currency a unit name and decimal places
 		let mut properties = sc_chain_spec::Properties::new();
-		properties.insert("tokenSymbol".into(), "MQTY".into());
+		properties.insert("tokenSymbol".into(), "KEN".into());
 		properties.insert("tokenDecimals".into(), 18.into());
 		properties.insert("ss58Format".into(), 666.into());
 
@@ -132,7 +132,7 @@ pub mod devnet {
 	pub fn local_testnet_config() -> DevnetChainSpec {
 		// Give your base currency a unit name and decimal places
 		let mut properties = sc_chain_spec::Properties::new();
-		properties.insert("tokenSymbol".into(), "MQTY".into());
+		properties.insert("tokenSymbol".into(), "KEN".into());
 		properties.insert("tokenDecimals".into(), 18.into());
 		properties.insert("ss58Format".into(), 666.into());
 
@@ -275,7 +275,7 @@ pub mod mainnet {
 	pub fn development_config() -> MainChainSpec {
 		// Give your base currency a unit name and decimal places
 		let mut properties = sc_chain_spec::Properties::new();
-		properties.insert("tokenSymbol".into(), "MQTY".into());
+		properties.insert("tokenSymbol".into(), "KEN".into());
 		properties.insert("tokenDecimals".into(), 18.into());
 		properties.insert("ss58Format".into(), 666.into());
 
@@ -332,7 +332,7 @@ pub mod mainnet {
 	pub fn local_testnet_config() -> MainChainSpec {
 		// Give your base currency a unit name and decimal places
 		let mut properties = sc_chain_spec::Properties::new();
-		properties.insert("tokenSymbol".into(), "MQTY".into());
+		properties.insert("tokenSymbol".into(), "KEN".into());
 		properties.insert("tokenDecimals".into(), 18.into());
 		properties.insert("ss58Format".into(), 666.into());
 

@@ -112,7 +112,7 @@ pub type Executive = frame_executive::Executive<
 
 // SBP-M2 review: duplicate module implementations, move to runtime/common to standardise across devnet/mainnet
 pub mod fee {
-	use super::{Balance, ExtrinsicBaseWeight, MILLIMQTY};
+	use super::{Balance, ExtrinsicBaseWeight, MILLIKEN};
 	use frame_support::weights::{
 		FeePolynomial, Weight, WeightToFeeCoefficient, WeightToFeeCoefficients,
 		WeightToFeePolynomial,
@@ -154,9 +154,9 @@ pub mod fee {
 	impl WeightToFeePolynomial for RefTimeToFee {
 		type Balance = Balance;
 		fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-			// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLIMQTY:
-			// in our template, we map to 1/10 of that, or 1/10 MILLIMQTY
-			let p = MILLIMQTY / 10;
+			// in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLIKEN:
+			// in our template, we map to 1/10 of that, or 1/10 MILLIKEN
+			let p = MILLIKEN / 10;
 			let q = 100 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
 			smallvec![WeightToFeeCoefficient {
 				degree: 1,
@@ -173,7 +173,7 @@ pub mod fee {
 		type Balance = Balance;
 		fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
 			// Map 10kb proof to 1 CENT.
-			let p = MILLIMQTY / 10;
+			let p = MILLIKEN / 10;
 			let q = 10_000;
 
 			smallvec![WeightToFeeCoefficient {
@@ -221,15 +221,15 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 };
 
 // SBP-M2 review: move duplicate constants to runtime/common to standardise across devnet/mainnet
-pub const MICROMQTY: Balance = 1_000_000_000_000;
-pub const MILLIMQTY: Balance = 1_000 * MICROMQTY;
-pub const MQTY: Balance = 1_000 * MILLIMQTY;
+pub const MICROKEN: Balance = 1_000_000_000_000;
+pub const MILLIKEN: Balance = 1_000 * MICROKEN;
+pub const KEN: Balance = 1_000 * MILLIKEN;
 
-pub const EXISTENTIAL_DEPOSIT: Balance = MILLIMQTY;
+pub const EXISTENTIAL_DEPOSIT: Balance = MILLIKEN;
 
 // SBP-M2 review: move to runtime/common to standardise across devnet/mainnet
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-	(items as Balance * 20 * MQTY + (bytes as Balance) * 100 * MICROMQTY) / 100
+	(items as Balance * 20 * KEN + (bytes as Balance) * 100 * MICROKEN) / 100
 }
 
 /// The version information used to identify this runtime when compiled natively.
@@ -365,7 +365,7 @@ impl pallet_balances::Config for Runtime {
 
 // SBP-M2 review: move duplicate constants to runtime/common to standardise across devnet/mainnet
 parameter_types! {
-	pub const AssetDeposit: Balance = 10 * MQTY;
+	pub const AssetDeposit: Balance = 10 * KEN;
 	pub const StringLimit: u32 = 50;
 }
 
@@ -377,10 +377,10 @@ impl pallet_assets::Config for Runtime {
 	type AssetIdParameter = parity_scale_codec::Compact<u32>;
 	type Currency = Balances;
 	// SBP-M1 review: consider whether anyone should be able to permissionlessly create an asset -
-	// should probably be set to MQTY admin origin only.
+	// should probably be set to KEN admin origin only.
 	// TODO (@khssnv): consider Asset originator or Verifier origin only
 	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
-	// SBP-M1 review: may need to be root or MQTY admin origin to allow force_set_metadata for
+	// SBP-M1 review: may need to be root or KEN admin origin to allow force_set_metadata for
 	// fractionalised assets - see EitherOf<L, R>.
 	// TODO (@khssnv): consider Verifier origin
 	type ForceOrigin = EnsureRoot<AccountId>;
@@ -401,7 +401,7 @@ impl pallet_assets::Config for Runtime {
 // SBP-M2 review: move duplicate constants to runtime/common to standardise across devnet/mainnet
 parameter_types! {
 	/// Relay Chain `TransactionByteFee` / 10
-	pub const TransactionByteFee: Balance = 10 * MICROMQTY;
+	pub const TransactionByteFee: Balance = 10 * MICROKEN;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
@@ -635,7 +635,7 @@ impl pallet_identity::Config for Runtime {
 	type MaxRegistrars = ConstU32<20>;
 	type Slashed = Treasury;
 	type ForceOrigin = EnsureRoot<AccountId>;
-	// SBP-M1 review: should be EnsureRoot or MQTY admin origin to maintain registrar integrity
+	// SBP-M1 review: should be EnsureRoot or KEN admin origin to maintain registrar integrity
 	// TODO (@khssnv): consider Verifier origin
 	type RegistrarOrigin = EnsureRoot<AccountId>;
 	type WeightInfo = ();
@@ -651,14 +651,14 @@ impl pallet_nfts::Config for Runtime {
 	type ItemId = u32;
 	type Currency = Balances;
 	type ForceOrigin = EnsureRoot<AccountId>;
-	type CollectionDeposit = ConstU128<{ 100 * MQTY }>;
-	type ItemDeposit = ConstU128<{ 1 * MQTY }>;
+	type CollectionDeposit = ConstU128<{ 100 * KEN }>;
+	type ItemDeposit = ConstU128<{ 1 * KEN }>;
 	// SBP-M1 review: provide justification as to how 10 is determined.
 	// TODO (@khssnv): reconsider
-	type MetadataDepositBase = ConstU128<{ 10 * MQTY }>;
+	type MetadataDepositBase = ConstU128<{ 10 * KEN }>;
 	// SBP-M1 review: provide justification as to how 10 is determined.
 	// TODO (@khssnv): reconsider
-	type AttributeDepositBase = ConstU128<{ 10 * MQTY }>;
+	type AttributeDepositBase = ConstU128<{ 10 * KEN }>;
 	type DepositPerByte = ConstU128<{ deposit(0, 1) }>;
 	type StringLimit = ConstU32<256>;
 	type KeyLimit = ConstU32<64>;
@@ -677,7 +677,7 @@ impl pallet_nfts::Config for Runtime {
 	// SBP-M1 review: consider whether any user with access to public chain should be able to
 	// permissionlessly create collections, which is currently the case here. The use-case/UI
 	// screenshots imply that asset verification is required, so assume the onchain creation of
-	// collections should only be carried out by MQTY admin (e.g. configure CreateOrigin as MQTY
+	// collections should only be carried out by KEN admin (e.g. configure CreateOrigin as KEN
 	// admin) and then assets (NFTs) minted by the collection admin once verified.
 	// TODO (@khssnv): consider Asset originator or Verifier origin only
 	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
@@ -721,12 +721,12 @@ impl pallet_nft_fractionalization::Config for Runtime {
 // SBP-M2 review: move duplicate constants to runtime/common to standardise across devnet/mainnet
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
-	pub const ProposalBondMinimum: Balance = 1 * MQTY;
+	pub const ProposalBondMinimum: Balance = 1 * KEN;
 	pub const SpendPeriod: BlockNumber = 1 * DAYS;
 	pub const Burn: Permill = Permill::from_percent(50);
 	pub const TipCountdown: BlockNumber = 1 * DAYS;
 	pub const TipFindersFee: Percent = Percent::from_percent(20);
-	pub const TipReportDepositBase: Balance = 1 * MQTY;
+	pub const TipReportDepositBase: Balance = 1 * KEN;
 	pub const DataDepositPerByte: Balance = deposit(0, 1);
 	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
 	pub const MaximumReasonLength: u32 = 300;
@@ -768,7 +768,7 @@ impl pallet_vesting::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Currency = Balances;
 	type BlockNumberToBalance = ConvertInto;
-	type MinVestedTransfer = ConstU128<{ 1 * MQTY }>;
+	type MinVestedTransfer = ConstU128<{ 1 * KEN }>;
 	type WeightInfo = pallet_vesting::weights::SubstrateWeight<Runtime>;
 	type UnvestedFundsAllowedWithdrawReasons = UnvestedFundsAllowedWithdrawReasons;
 	// `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the

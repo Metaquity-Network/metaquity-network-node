@@ -89,7 +89,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Metaquity Network".into()
+		"Phyken Network".into()
 	}
 
 	fn impl_version() -> String {
@@ -98,12 +98,11 @@ impl SubstrateCli for Cli {
 
 	fn description() -> String {
 		format!(
-			"Parachain Collator Template\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
-		to the relay chain node.\n\n\
-		{} <parachain-args> -- <relay-chain-args>",
-			Self::executable_name()
+			"Phyken Network is an app-chain and DeFi protocol, building an RWA asset
+			fractionalization protocol,particularly emphasizing GRWA: renewable 
+			energies and solar power on the blockchain."
 		)
+		.into()
 	}
 
 	// @khssnv: ToDo: merge this from the `extended-parachain-template` with above
@@ -145,12 +144,11 @@ impl SubstrateCli for RelayChainCli {
 
 	fn description() -> String {
 		format!(
-			"Parachain Collator Template\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
-		to the relay chain node.\n\n\
-		{} <parachain-args> -- <relay-chain-args>",
-			Self::executable_name()
+			"Phyken Network is an app-chain and DeFi protocol, building an RWA asset
+			fractionalization protocol,particularly emphasizing GRWA: renewable 
+			energies and solar power on the blockchain."
 		)
+		.into()
 	}
 
 	fn author() -> String {
