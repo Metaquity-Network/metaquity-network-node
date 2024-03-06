@@ -1,4 +1,4 @@
-use phyken_runtime::{
+use metaquity_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GrandpaConfig, RuntimeGenesisConfig, Signature,
 	SudoConfig, SystemConfig, WASM_BINARY,
 };

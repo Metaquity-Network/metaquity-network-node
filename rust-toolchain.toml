@@ -1,5 +1,6 @@
 [toolchain]
-channel = "stable"
+# SBP-M2 review: nightly no longer required, provided update to more recent version
+channel = "nightly-2023-05-22"
 components = [
 	"cargo",
 	"clippy",

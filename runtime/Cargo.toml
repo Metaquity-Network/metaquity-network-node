@@ -1,7 +1,7 @@
 [package]
-name = "phyken-runtime"
+name = "metaquity-runtime"
 version = "0.1.0"
-description = "Phyken network runtime."
+description = "Metaquity mainnet runtime."
 
 authors.workspace = true
 edition.workspace = true
