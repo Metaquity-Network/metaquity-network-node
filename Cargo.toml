@@ -8,6 +8,6 @@ resolver = "2"
 [workspace.package]
 authors = ["Metaquity Limited <hello@metaquity.xyz>"]
 edition = "2021"
-homepage = "https://metaquity.xyz/"
+homepage = "https://phyken.network/"
 license = "Unlicense"
 repository = "https://github.com/Metaquity-Network/metaquity-network-node"

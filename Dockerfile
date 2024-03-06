@@ -3,10 +3,10 @@ FROM phusion/baseimage:jammy-1.0.1
 # metadata
 ARG BUILD_DATE
 
-LABEL xyz.metaquity.image.authors="hello@metaquity.xyz" \
-	xyz.metaquity.image.vendor="Metaquity Limited" \
-	xyz.metaquity.image.title="Metaquity-Network/metaquity" \
-	xyz.metaquity.image.created="${BUILD_DATE}"
+LABEL xyz.phyken.image.authors="hello@metaquity.xyz" \
+	xyz.phyken.image.vendor="Metaquity Limited" \
+	xyz.phyken.image.title="Phyken-Network/phyken" \
+	xyz.phyken.image.created="${BUILD_DATE}"
 
 # show backtraces
 ENV RUST_BACKTRACE 1
@@ -18,20 +18,20 @@ RUN apt-get update && \
 	apt-get autoremove -y && \
 	apt-get clean && \
 	find /var/lib/apt/lists/ -type f -not -name lock -delete; \
-# add user and link ~/.local/share/metaquity to /data
-	useradd -m -u 1000 -U -s /bin/sh -d /metaquity metaquity && \
-	mkdir -p /data /metaquity/.local/share && \
-	chown -R metaquity:metaquity /data && \
-	ln -s /data /metaquity/.local/share/metaquity
+# add user and link ~/.local/share/phyken to /data
+	useradd -m -u 1000 -U -s /bin/sh -d /phyken phyken && \
+	mkdir -p /data /phyken/.local/share && \
+	chown -R phyken:phyken /data && \
+	ln -s /data /phyken/.local/share/phyken
 
-USER metaquity
+USER phyken
 
 # copy the compiled binary to the container
-COPY --chown=metaquity:metaquity --chmod=774 metaquity /usr/bin/metaquity
+COPY --chown=phyken:phyken --chmod=774 phyken /usr/bin/phyken
 
 # check if executable works in this container
-RUN /usr/bin/metaquity --version
+RUN /usr/bin/phyken --version
 
 EXPOSE 9930 9333 9944 30333 30334
 
-CMD ["/usr/bin/metaquity"]
+CMD ["/usr/bin/phyken"]

@@ -1,3 +1,3 @@
-# Metaquity Network PoA Node
+# Phyken Network PoA Node
 
-The first phase of Metaquity Network development with the PoA consensus.
+The first phase of Phyken Network development with the PoA consensus.

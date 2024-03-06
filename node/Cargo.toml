@@ -1,7 +1,7 @@
 [package]
-name = "metaquity-node"
+name = "phyken-node"
 version = "0.1.0"
-description = "Metaquity Network is the World's First Permissioned Blockchain Network and DeFi Protocol for Real World Assets (RWA)."
+description = "Phyken Network is an app-chain and DeFi protocol, building an RWA asset fractionalization protocol, particularly emphasizing GRWA: renewable energies and solar power on the blockchain."
 
 authors.workspace = true
 build = "build.rs"
@@ -15,7 +15,7 @@ repository.workspace = true
 targets = ["x86_64-unknown-linux-gnu"]
 
 [[bin]]
-name = "metaquity"
+name = "phyken"
 path = "src/main.rs"
 
 [dependencies]
@@ -64,7 +64,7 @@ frame-benchmarking = { version = "4.0.0-dev", git = "https://github.com/parityte
 frame-benchmarking-cli = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
 
 # Local Dependencies
-metaquity-runtime = { version = "0.1.0", path = "../runtime" }
+phyken-runtime = { version = "0.1.0", path = "../runtime" }
 
 # CLI-specific dependencies
 # SBP-M2 review: update to recent version (Substrate within Polkadot SDK now at 1.5)
@@ -78,10 +78,10 @@ substrate-build-script-utils = { version = "3.0.0", git = "https://github.com/pa
 default = []
 # Dependencies that are only required if runtime benchmarking should be build.
 runtime-benchmarks = [
-	"metaquity-runtime/runtime-benchmarks",
+	"phyken-runtime/runtime-benchmarks",
 	"frame-benchmarking/runtime-benchmarks",
 	"frame-benchmarking-cli/runtime-benchmarks",
 ]
 # Enable features that allow the runtime to be tried and debugged. Name might be subject to change
 # in the near future.
-try-runtime = ["metaquity-runtime/try-runtime", "try-runtime-cli/try-runtime"]
+try-runtime = ["phyken-runtime/try-runtime", "try-runtime-cli/try-runtime"]
